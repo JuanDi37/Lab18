@@ -62,7 +62,7 @@
   <h1>Lab 18: Signal, Safety Number y un túnel WireGuard</h1>
   <p>Sesión 21 · Qué hicimos, qué vimos en el cable y qué nos llevamos.</p>
   <div class="status">
-    <div class="card"><div class="k">Safety Number</div><div class="v warn">Pendiente (en persona)</div></div>
+    <div class="card"><div class="k">Safety Number</div><div class="v warn">Sin verificar</div></div>
     <div class="card"><div class="k">Tabla servidor Signal</div><div class="v ok">Lista</div></div>
     <div class="card"><div class="k">Túnel WireGuard</div><div class="v ok">Handshake + ping + captura</div></div>
     <div class="card"><div class="k">E2EE.md</div><div class="v ok">Lista</div></div>
@@ -72,7 +72,6 @@
 <h2>1. Signal: Safety Number</h2>
 <p>El Safety Number es un fingerprint de las dos <em>identity keys</em> de una conversación. Se compara fuera de banda (en persona, por QR o con los 60 dígitos) y se marca como <em>verified</em>.</p>
 <p><strong>¿Qué detecta si no coincide?</strong> Un man-in-the-middle por sustitución de llaves: el servidor (comprometido u obligado) o alguien que hizo un SIM swap le entrega una llave falsa a cada lado. Cada teléfono calcula su número con una llave distinta, así que los números no coinciden.</p>
-<p class="warn"><strong>Estado:</strong> pendiente de hacer en persona con un compañero. El screenshot tachado irá en <code>img/safety-number-tachado.png</code>.</p>
 
 <h2>2. Qué sabe y qué no lee el servidor de Signal</h2>
 <div class="table-wrap">

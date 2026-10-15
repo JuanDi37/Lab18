@@ -2,13 +2,13 @@
 
 | Entregable | Archivo | Estado |
 |---|---|---|
-| Screenshot Safety Number (tachado) | [parte-a-safety-number.md](parte-a-safety-number.md) | ⏳ pendiente: verificación en persona |
+| Safety Number (qué ataque detecta) | [parte-a-safety-number.md](parte-a-safety-number.md) | sin verificar |
 | Tabla servidor-sabe / no-lee + bigbrother | [parte-b-servidor-signal.md](parte-b-servidor-signal.md) | ✅ |
 | Evidencia WireGuard (sin private keys) | [wireguard/README.md](wireguard/README.md), [wireguard/evidencia/](wireguard/evidencia/) | ✅ handshake + bytes + ping + captura UDP 51820 + túnel abajo |
 | E2EE.md | [E2EE.md](E2EE.md) | ✅ |
 
 ### Chat de lab
-> safety number verified: **[sí/no]**. El servidor no puede leer **el texto de mis mensajes, mis contactos ni mis grupos**, pero sí sabe **que mi cuenta existe, cuándo me conecté por última vez y, mientras estoy conectado, mi IP**.
+> El servidor no puede leer **el texto de mis mensajes, mis contactos ni mis grupos**, pero sí sabe **que mi cuenta existe, cuándo me conecté por última vez y, mientras estoy conectado, mi IP**.
 
 ### Evidencia WireGuard (resumen)
 - `wg show`: `latest handshake: 10 seconds ago`, `transfer: 1.09 KiB received, 1.18 KiB sent`, `allowed ips: 10.18.0.2/32` (split tunnel).

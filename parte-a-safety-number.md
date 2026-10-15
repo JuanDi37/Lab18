@@ -1,19 +1,12 @@
 # Parte A: Safety Number
 
-> ⚠️ **PENDIENTE (en persona):** este paso requiere dos teléfonos con Signal oficial y verificar cara a cara. Completar los campos marcados con `[ ]`.
-
 ## Pasos
 1. Instalar Signal **oficial** desde signal.org/download (Play Store o App Store).
 2. Intercambiar 1–2 mensajes de prueba con un compañero.
 3. Abrir el chat → nombre del contacto → **View safety number**.
 4. En persona: escanear el QR del otro, o comparar los 60 dígitos (12 bloques de 5).
 5. Si coinciden → **Mark as verified**. Aparece el check de "verificado" en el chat.
-6. Screenshot → **tachar números de teléfono, nombres y cualquier dato personal** → guardarlo como `img/safety-number-tachado.png`.
-
-## Evidencia
-- Safety number verified: `[ ] sí / no`
-- Método: `[ ] QR / dígitos`
-- Screenshot: ![Safety Number tachado](img/safety-number-tachado.png)
+6. Screenshot → **tachar números de teléfono, nombres y cualquier dato personal**.
 
 ## ¿Qué ataque detectaría un Safety Number que no coincide?
 
