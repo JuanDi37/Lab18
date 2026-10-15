@@ -1,0 +1,6 @@
+# Nunca subir private keys
+*.key
+privatekey*
+*private*
+wireguard/shared/
+wireguard/*.pcap.tmp

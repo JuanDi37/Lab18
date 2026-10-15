@@ -1,0 +1,25 @@
+# 2026-10-15T00:40:50Z  peer-a: wg show
+interface: wg0
+  public key: 49HnUIHJig36uraoTarmFQ4h1Qx6PzXVY+njoD6ZhT8=
+  private key: (hidden)
+  listening port: 51820
+
+peer: W/EUz37rOrwH8bvTy0ALmcX8KEHxBP4JVy2Fo8VCniY=
+  endpoint: 172.30.18.20:51820
+  allowed ips: 10.18.0.2/32
+  latest handshake: 20 seconds ago
+  transfer: 1.12 KiB received, 1.18 KiB sent
+  persistent keepalive: every 25 seconds
+
+# peer-a: ip addr wg0
+wg0              UNKNOWN        10.18.0.1/24 
+
+# peer-a: wg showconf (linea de llave privada filtrada)
+[Interface]
+ListenPort = 51820
+
+[Peer]
+PublicKey = W/EUz37rOrwH8bvTy0ALmcX8KEHxBP4JVy2Fo8VCniY=
+AllowedIPs = 10.18.0.2/32
+Endpoint = 172.30.18.20:51820
+PersistentKeepalive = 25

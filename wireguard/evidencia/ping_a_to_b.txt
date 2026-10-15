@@ -1,0 +1,11 @@
+PATTERN: 0x4c414231382d53454352455430
+PING 10.18.0.2 (10.18.0.2) 56(84) bytes of data.
+64 bytes from 10.18.0.2: icmp_seq=1 ttl=64 time=0.584 ms
+64 bytes from 10.18.0.2: icmp_seq=2 ttl=64 time=1.06 ms
+64 bytes from 10.18.0.2: icmp_seq=3 ttl=64 time=0.866 ms
+64 bytes from 10.18.0.2: icmp_seq=4 ttl=64 time=0.457 ms
+64 bytes from 10.18.0.2: icmp_seq=5 ttl=64 time=0.690 ms
+
+--- 10.18.0.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4070ms
+rtt min/avg/max/mdev = 0.457/0.730/1.056/0.210 ms

@@ -1,0 +1,12 @@
+WireGuard Protocol
+    Type: Handshake Initiation (1)
+    Reserved: 000000
+    Sender: 0xdd5682aa
+    Ephemeral: 3otqBZtyapWusuPiJX7z/E3YaWRucDMFWukPiEWCFgI=
+        [Has Private Key: False]
+    Encrypted Static
+    Encrypted Timestamp
+    mac1: 2dc7b188aef29125368c314cff7be096
+    mac2: 00000000000000000000000000000000
+    [Stream index: 0]
+

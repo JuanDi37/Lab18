@@ -1,0 +1,20 @@
+# Dos peers WireGuard que controlamos, en una red de laboratorio aislada.
+# Underlay ("la red / el ISP"): 172.30.18.0/24   Tunel (overlay): 10.18.0.0/24
+services:
+  peer-a:
+    build: .
+    container_name: wg-peer-a
+    cap_add: [NET_ADMIN]
+    environment: {ME: peer-a, PEER: peer-b, TUN_IP: 10.18.0.1, PEER_TUN_IP: 10.18.0.2, PEER_ENDPOINT: 172.30.18.20}
+    volumes: ["./shared:/shared", "./evidencia:/evidencia"]
+    networks: {labnet: {ipv4_address: 172.30.18.10}}
+  peer-b:
+    build: .
+    container_name: wg-peer-b
+    cap_add: [NET_ADMIN]
+    environment: {ME: peer-b, PEER: peer-a, TUN_IP: 10.18.0.2, PEER_TUN_IP: 10.18.0.1, PEER_ENDPOINT: 172.30.18.10}
+    volumes: ["./shared:/shared", "./evidencia:/evidencia"]
+    networks: {labnet: {ipv4_address: 172.30.18.20}}
+networks:
+  labnet:
+    ipam: {config: [{subnet: 172.30.18.0/24}]}

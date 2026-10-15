@@ -1,0 +1,24 @@
+# Mismo ping visto en dos capas (peer-a)
+
+## Underlay eth0, UDP 51820 (lo que ve la red/ISP) - frame 4 Transport Data
+0000  4e 43 75 c9 cd d2 72 79 12 57 ec 46 08 00 45 00   NCu...ry.W.F..E.
+0010  00 9c e2 af 00 00 40 11 1b 47 ac 1e 12 0a ac 1e   ......@..G......
+0020  12 14 ca 6c ca 6c 00 88 7c f4 04 00 00 00 4a 37   ...l.l..|.....J7
+0030  16 63 01 00 00 00 00 00 00 00 cc df 07 54 3d 81   .c...........T=.
+0040  2b 68 bf cb de 47 dc dc 52 ec 16 ae 26 7a f1 e3   +h...G..R...&z..
+0050  93 c9 4d 02 1d f5 4c f8 6f 6a c8 94 56 0c 8e 7a   ..M...L.oj..V..z
+0060  36 a2 ed ea f5 a3 f7 70 46 65 d9 d6 fe b7 98 77   6......pFe.....w
+0070  b9 a9 98 32 93 7a 45 a1 2e e0 99 dc 74 82 82 ce   ...2.zE.....t...
+0080  80 f7 77 bf c2 e1 a6 f7 76 e0 9c 62 da 3c c4 75   ..w.....v..b.<.u
+0090  9e 0d 2a aa 55 83 00 2f d3 24 f5 f9 82 53 e5 26   ..*.U../.$...S.&
+00a0  a0 23 7d 9a bf 13 59 94 76 7a                     .#}...Y.vz
+
+
+## Overlay wg0 (lo que ve el otro peer tras descifrar) - primer ICMP
+00:40:32.018115 IP 10.18.0.1 > 10.18.0.2: ICMP echo request, id 23568, seq 1, length 64
+	0x0000:  4500 0054 d39b 4000 4001 52e7 0a12 0001  E..T..@.@.R.....
+	0x0010:  0a12 0002 0800 7279 5c10 0001 0021 d06a  ......ry\....!.j
+	0x0020:  0000 0000 b046 0000 0000 0000 3138 2d53  .....F......18-S
+	0x0030:  4543 5245 5430 4c41 4231 382d 5345 4352  ECRET0LAB18-SECR
+	0x0040:  4554 304c 4142 3138 2d53 4543 5245 5430  ET0LAB18-SECRET0
+	0x0050:  0000 0000                                ....

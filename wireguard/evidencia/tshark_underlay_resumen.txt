@@ -1,0 +1,20 @@
+frame.number	ip.src	ip.dst	frame.len	_ws.col.info
+1	172.30.18.10	172.30.18.20	190	Handshake Initiation, sender=0xDD5682AA
+2	172.30.18.20	172.30.18.10	134	Handshake Response, sender=0x6316374A, receiver=0xDD5682AA
+3	172.30.18.10	172.30.18.20	74	Keepalive, receiver=0x6316374A, counter=0
+4	172.30.18.10	172.30.18.20	170	Transport Data, receiver=0x6316374A, counter=1, datalen=96
+5	172.30.18.20	172.30.18.10	170	Transport Data, receiver=0xDD5682AA, counter=0, datalen=96
+6	172.30.18.10	172.30.18.20	170	Transport Data, receiver=0x6316374A, counter=2, datalen=96
+7	172.30.18.20	172.30.18.10	170	Transport Data, receiver=0xDD5682AA, counter=1, datalen=96
+8	172.30.18.10	172.30.18.20	170	Transport Data, receiver=0x6316374A, counter=3, datalen=96
+9	172.30.18.20	172.30.18.10	170	Transport Data, receiver=0xDD5682AA, counter=2, datalen=96
+10	172.30.18.10	172.30.18.20	170	Transport Data, receiver=0x6316374A, counter=4, datalen=96
+11	172.30.18.20	172.30.18.10	170	Transport Data, receiver=0xDD5682AA, counter=3, datalen=96
+12	172.30.18.10	172.30.18.20	170	Transport Data, receiver=0x6316374A, counter=5, datalen=96
+13	172.30.18.20	172.30.18.10	170	Transport Data, receiver=0xDD5682AA, counter=4, datalen=96
+14	172.30.18.20	172.30.18.10	170	Transport Data, receiver=0xDD5682AA, counter=5, datalen=96
+15	172.30.18.10	172.30.18.20	170	Transport Data, receiver=0x6316374A, counter=6, datalen=96
+16	172.30.18.20	172.30.18.10	170	Transport Data, receiver=0xDD5682AA, counter=6, datalen=96
+17	172.30.18.10	172.30.18.20	170	Transport Data, receiver=0x6316374A, counter=7, datalen=96
+18	172.30.18.20	172.30.18.10	170	Transport Data, receiver=0xDD5682AA, counter=7, datalen=96
+19	172.30.18.10	172.30.18.20	170	Transport Data, receiver=0x6316374A, counter=8, datalen=96

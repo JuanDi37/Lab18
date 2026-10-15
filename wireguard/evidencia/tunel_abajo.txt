@@ -1,0 +1,8 @@
+# peer-a: wg-quick down wg0
+[#] ip link delete dev wg0
+# peer-a: wg show tras bajar (vacio = sin interfaces)
+
+# peer-b: wg-quick down wg0
+[#] ip link delete dev wg0
+# peer-b: wg show tras bajar (vacio = sin interfaces)
+
