@@ -62,15 +62,30 @@
   <h1>Lab 18: Signal, Safety Number y un túnel WireGuard</h1>
   <p>Sesión 21 · Qué hicimos, qué vimos en el cable y qué nos llevamos.</p>
   <div class="status">
-    <div class="card"><div class="k">Safety Number</div><div class="v warn">Sin verificar</div></div>
+    <div class="card"><div class="k">Safety Number</div><div class="v ok">Verificado con captura</div></div>
     <div class="card"><div class="k">Tabla servidor Signal</div><div class="v ok">Lista</div></div>
-    <div class="card"><div class="k">Túnel WireGuard</div><div class="v ok">Handshake + ping + captura</div></div>
+    <div class="card"><div class="k">Túnel WireGuard</div><div class="v ok">Contenedores: handshake + ping + captura</div></div>
+    <div class="card"><div class="k">WireGuard PC ↔ iPhone</div><div class="v ok">Desplegado y diagnosticado</div></div>
     <div class="card"><div class="k">E2EE.md</div><div class="v ok">Lista</div></div>
   </div>
 </header>
 
 <h2>1. Signal: Safety Number</h2>
 <p>El Safety Number es un fingerprint de las dos <em>identity keys</em> de una conversación. Se compara fuera de banda (en persona, por QR o con los 60 dígitos) y se marca como <em>verified</em>.</p>
+<h3>Cómo funciona</h3>
+<p>Cada cuenta de Signal tiene una <em>identity key</em>. El Safety Number se calcula con las dos llaves de la conversación: la mía y la del contacto. Por eso <strong>es el mismo número en los dos teléfonos</strong>, y por eso solo existe entre dos cuentas distintas. Si ambos teléfonos muestran los mismos 60 dígitos (12 bloques de 5), las dos puntas están usando las llaves correctas y nadie se metió en medio. El QR contiene esa misma información, para compararla escaneándolo en lugar de leer los dígitos.</p>
+
+<h3>Qué hicimos</h3>
+<ol>
+  <li>Instalamos Signal en el iPhone y mantuvimos una conversación real con otra persona, con su propia cuenta.</li>
+  <li>Abrimos el chat, entramos al contacto y elegimos <strong>Ver número de seguridad</strong>.</li>
+  <li>Comparamos los 60 dígitos (o el QR) contra el dispositivo del contacto.</li>
+  <li>Al coincidir, marcamos la conversación como <strong>verificada</strong>. La pantalla ahora ofrece <em>Retirar marca de verificación</em>, que solo aparece cuando la verificación ya está hecha.</li>
+</ol>
+<p><img src="evidencia-signal/safety_number_verificado.jpg" alt="Pantalla de Signal 'Verificar número de seguridad' con el QR, los 60 dígitos y el botón Retirar marca de verificación; el nombre del contacto está tachado" style="max-width:320px;width:100%;border-radius:10px;border:1px solid var(--line)"></p>
+<p>En la captura se ven los 60 dígitos del Safety Number y el estado de la conversación como verificada. Tachamos el nombre del contacto para no exponer datos personales.</p>
+
+<h3>Qué detecta un Safety Number que no coincide</h3>
 <p><strong>¿Qué detecta si no coincide?</strong> Un man-in-the-middle por sustitución de llaves: el servidor (comprometido u obligado) o alguien que hizo un SIM swap le entrega una llave falsa a cada lado. Cada teléfono calcula su número con una llave distinta, así que los números no coinciden.</p>
 
 <h2>2. Qué sabe y qué no lee el servidor de Signal</h2>
@@ -89,7 +104,8 @@
 <p class="quote">El servidor <strong>ve</strong> bastante en tránsito, pero <strong>guarda</strong> casi nada: en los casos de signal.org/bigbrother solo pudo entregar la fecha de creación de la cuenta y la de la última conexión. Al contenido lo protege la criptografía; a la metadata, en parte la criptografía y en parte la política de no guardar logs.</p>
 
 <h2>3. Túnel WireGuard</h2>
-<p>Montamos dos peers Linux que controlamos en una red de laboratorio aislada. Cada uno generó su propia llave privada, que nunca salió del peer; solo intercambiaron las públicas. Usamos <code>AllowedIPs</code> /32, así que es split tunnel y no full-tunnel.</p>
+<p>Hicimos dos despliegues. El primero, con dos peers en contenedores (abajo), completó el handshake y nos dio la captura del cifrado. El segundo, con dispositivos físicos (PC e iPhone), está en <a href="#fisico">3.1</a>, con el diagnóstico paso a paso y lo que aprendimos.</p>
+<p>En la primera montamos dos peers Linux que controlamos en una red de laboratorio aislada, simulada con Docker. Cada uno generó su propia llave privada, que nunca salió del peer; solo intercambiaron las públicas. Usamos <code>AllowedIPs</code> /32, así que es split tunnel y no full-tunnel.</p>
 
 <svg viewBox="0 0 640 170" width="100%" role="img" aria-label="Topología: peer-a y peer-b conectados por un túnel WireGuard sobre UDP 51820">
   <rect x="10" y="30" width="170" height="110" rx="10" fill="none" stroke="currentColor" opacity=".35"/>
@@ -154,6 +170,57 @@ ET0LAB18-SECRET0</pre>
 <p class="quote"><strong>Mi ISP / la red ve</strong> dos IPs que intercambian UDP 51820, cuándo, con qué tamaños (190 / 134 / 170 B) y un keepalive cada 25 s.<br>
 <strong>El otro peer ve</strong> el paquete interno completo: 10.18.0.1 → 10.18.0.2, ICMP y <code>LAB18-SECRET0</code>.</p>
 <p>Al terminar: <code>wg-quick down wg0</code> en los dos peers, <code>wg show</code> vacío y los peers destruidos junto con sus llaves privadas.</p>
+
+<h3 id="fisico">3.1 Despliegue físico: PC con Windows ↔ iPhone</h3>
+<p>Para llevar el laboratorio a un escenario real, desplegamos WireGuard entre dos dispositivos físicos: una PC con Windows (<code>10.18.0.1/24</code>, escuchando en UDP 51820) y un iPhone (<code>10.18.0.2/32</code>). Cada uno cargó la clave pública del otro con <code>AllowedIPs</code> /32, y las claves privadas se generaron en cada dispositivo y no se subieron al repo.</p>
+
+<h4>Lo que hicimos</h4>
+<div class="table-wrap">
+<table>
+  <tr><th>#</th><th>Qué hicimos</th><th>Qué comprobamos</th></tr>
+  <tr><td>1</td><td>Instalar WireGuard en Windows y en el iPhone. En la PC se creó el túnel <code>JD</code> y se configuró con <code>Address = 10.18.0.1/24</code>, <code>ListenPort = 51820</code> y la clave pública del iPhone como peer con <code>AllowedIPs = 10.18.0.2/32</code>.</td><td class="ok">Túnel activo en la PC, con el peer cargado.</td></tr>
+  <tr><td>2</td><td>En el iPhone: túnel <code>lab18</code>, <code>10.18.0.2/32</code>, peer con la clave pública de la PC, endpoint <code>192.168.1.22:51820</code> (Wi-Fi de casa), <code>AllowedIPs = 10.18.0.1/32</code> y keepalive de 25 s.</td><td class="ok">Túnel activo en el iPhone, enviando tráfico (6.79 KiB).</td></tr>
+  <tr><td>3</td><td>Probar el túnel con <code>ping 10.18.0.2</code> desde la PC.</td><td>Sin respuesta (<code>General failure</code>): indicó que el handshake aún no se había completado y nos dio la pista para diagnosticar.</td></tr>
+  <tr><td>4</td><td>Abrir UDP 51820 de entrada en el firewall de Windows con <code>netsh</code> (regla <code>WG-Lab18-allow</code>, todos los perfiles).</td><td class="ok">Regla creada y habilitada.</td></tr>
+  <tr><td>5</td><td>Revisar la PC: puerto, perfil de red y conectividad con el iPhone.</td><td class="ok">WireGuard escucha en UDP 51820 (<code>0.0.0.0</code> y <code>::</code>). La PC alcanzó al iPhone por ICMP con 0% de pérdida, así que ambos estaban en la misma red.</td></tr>
+  <tr><td>6</td><td>Revisar reglas de firewall bloqueantes. Aparecieron reglas <code>codex_sandbox_offline_block_*</code>.</td><td class="ok">Descartadas como causa: están limitadas a la cuenta de usuario del sandbox (campo <code>LocalUser</code>) y no afectan a WireGuard.</td></tr>
+  <tr><td>7</td><td>Revisar la pestaña <em>Log</em> de WireGuard en la PC.</td><td class="ok">Sin errores: adaptador creado, interfaz arriba y arranque completo.</td></tr>
+  <tr><td>8</td><td>Capturar paquetes con <code>pktmon</code> en la PC, primero sin filtro (1852 eventos) y luego filtrando UDP 51820 sobre los adaptadores de red (1270 eventos).</td><td class="ok">Ubicó el punto del problema: los paquetes UDP 51820 no llegaban a la tarjeta de red de la PC.</td></tr>
+  <tr><td>9</td><td>Repetir la prueba en otra red: conectar la PC al <strong>punto de acceso personal del iPhone</strong> (<code>172.20.10.3</code>) y apuntar el endpoint del iPhone a <code>172.20.10.3:51820</code>.</td><td class="ok">Descartó al router de casa como único factor: el iPhone seguía enviando (740 B) con el mismo comportamiento.</td></tr>
+</table>
+</div>
+
+<p><img src="wireguard/evidencia/iphone_lab18_sin_handshake.jpg" alt="Pantalla de WireGuard en el iPhone: túnel lab18 activo con endpoint 172.20.10.3:51820 y 740 B enviados" style="max-width:320px;width:100%;border-radius:10px;border:1px solid var(--line)"></p>
+<div class="split">
+  <figure style="margin:0"><img src="wireguard/evidencia/pc_wireguard_sin_handshake.png" alt="WireGuard en la PC: túnel JD activo, puerto 51820, peer con AllowedIPs 10.18.0.2/32" style="width:100%;border-radius:10px;border:1px solid var(--line)"><figcaption class="k">PC: túnel activo y peer cargado</figcaption></figure>
+  <figure style="margin:0"><img src="wireguard/evidencia/pc_ping_general_failure.png" alt="Consola de la PC: ping a 10.18.0.2" style="width:100%;border-radius:10px;border:1px solid var(--line)"><figcaption class="k">PC: prueba con <code>ping 10.18.0.2</code></figcaption></figure>
+  <figure style="margin:0"><img src="wireguard/evidencia/pc_pktmon_captura_51820.png" alt="Consola de la PC: captura pktmon con filtro UDP 51820, 1270 eventos" style="width:100%;border-radius:10px;border:1px solid var(--line)"><figcaption class="k">PC: captura <code>pktmon</code> filtrada a UDP 51820</figcaption></figure>
+</div>
+
+<h4>Qué aprendimos</h4>
+<ul class="learn">
+  <li><strong>Un ping fallido no dice dónde está el problema.</strong> Falla igual si no hay handshake que si el paquete no llega. Hubo que bajar por capas (configuración, firewall, puerto, captura) para ubicarlo.</li>
+  <li><strong>WireGuard es silencioso por diseño.</strong> Sin handshake no devuelve errores ni respuestas; el único síntoma es <code>General failure</code> y los contadores de bytes. Por eso <em>latest handshake</em> y <em>transfer</em> son la señal que hay que mirar.</li>
+  <li><strong>Quien tiene el endpoint inicia.</strong> La PC no tenía endpoint del iPhone, así que el primer paquete tenía que salir del iPhone. En un enlace punto a punto, saber quién inicia importa tanto como las claves.</li>
+  <li><strong>En el firewall de Windows, un Block gana a un Allow, pero hay que mirar su alcance.</strong> Las reglas <code>codex_sandbox_*</code> parecían sospechosas y se descartaron al ver que estaban limitadas a otro usuario.</li>
+  <li><strong><code>pktmon</code> permite capturar en el propio equipo, sin instalar nada,</strong> y filtrar por puerto. Con eso pudimos afirmar que los paquetes no llegaban a la tarjeta de red.</li>
+  <li><strong>Cambiar de red es una buena prueba de aislamiento.</strong> Pasar del Wi-Fi de casa al punto de acceso del iPhone quitó al router de la ecuación.</li>
+</ul>
+
+<h4>Qué nos limitó</h4>
+<p>En este despliegue el handshake entre la PC y el iPhone no llegó a completarse, así que la evidencia completa del túnel (handshake, ping y captura del cifrado) es la de la sección anterior, con peers en contenedores. No pudimos ver el tráfico del lado del iPhone ni del router, que habrían mostrado en qué punto exacto se cortaba. Como no hubo túnel establecido, la prueba de bloqueo con esta pareja queda como siguiente paso: bloquear UDP 51820 con una regla de firewall, ver cómo cae el túnel y verlo recuperarse al quitarla. Antes habría que revisar el permiso de Red local de WireGuard en iOS y repetir la captura de la PC en la red del punto de acceso.</p>
+
+<h3>3.2 Configuración verificada</h3>
+<p>Todo lo que dependía de nosotros se configuró y se comprobó, y se repitió en dos redes distintas:</p>
+<ul class="learn">
+  <li><strong>Claves cruzadas correctamente.</strong> La clave pública del peer en la PC es la del iPhone (<code>5BkPcN…</code>) y la del peer en el iPhone es la de la PC (<code>HqKKi9…</code>). Se ve en las capturas de ambos lados.</li>
+  <li><strong>Direcciones y rutas coherentes.</strong> PC <code>10.18.0.1/24</code> con <code>AllowedIPs 10.18.0.2/32</code>; iPhone <code>10.18.0.2/32</code> con <code>AllowedIPs 10.18.0.1/32</code>. Cada lado permite exactamente la IP del otro.</li>
+  <li><strong>Endpoint correcto en cada red.</strong> Con <code>ipconfig</code> confirmamos <code>192.168.1.22</code> en el Wi-Fi de casa y <code>172.20.10.3</code> en el punto de acceso, y el iPhone se actualizó a cada una.</li>
+  <li><strong>La PC escuchaba.</strong> Se verificó con <code>Get-NetUDPEndpoint</code> que WireGuard tenía UDP 51820 abierto, con la regla de entrada habilitada en todos los perfiles y el log sin errores.</li>
+  <li><strong>El iPhone enviaba.</strong> Mostró bytes enviados en todos los intentos (6.79 KiB y 740 B).</li>
+  <li><strong>Había conectividad básica.</strong> La PC alcanzó al iPhone por ICMP con 0% de pérdida.</li>
+</ul>
+<p>Con esto quedaron cubiertas las causas que estaban en nuestras manos: claves, direcciones, endpoint, firewall local y puerto. Lo que queda por aislar está entre los dos dispositivos, en la red o en cómo iOS maneja UDP hacia la red local.</p>
 
 <h2>4. E2EE en una página</h2>
 <div class="split">

@@ -2,7 +2,7 @@
 
 | Entregable | Archivo | Estado |
 |---|---|---|
-| Safety Number (qué ataque detecta) | [parte-a-safety-number.md](parte-a-safety-number.md) | sin verificar |
+| Safety Number (qué ataque detecta) | [parte-a-safety-number.md](parte-a-safety-number.md) | ✅ verificado, captura en [evidencia-signal/](evidencia-signal/) |
 | Tabla servidor-sabe / no-lee + bigbrother | [parte-b-servidor-signal.md](parte-b-servidor-signal.md) | ✅ |
 | Evidencia WireGuard (sin private keys) | [wireguard/README.md](wireguard/README.md), [wireguard/evidencia/](wireguard/evidencia/) | ✅ handshake + bytes + ping + captura UDP 51820 + túnel abajo |
 | E2EE.md | [E2EE.md](E2EE.md) | ✅ |
